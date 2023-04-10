@@ -6,13 +6,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use function PHPUnit\Framework\isEmpty;
 
 class LoginController extends Controller
 {
     public function check(Request $request)
     {
-
+       
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
@@ -20,9 +22,14 @@ class LoginController extends Controller
 
 
         if (Auth::attempt($credentials)) {
+            $input = $request->all();
+            $email = $input['email'];
+           
+           $users = DB::table('users')->select('id','role_id','name','email','api_token')->where('email' , $email )->get();
             return response()->json([
                 'status' => true,
                 'message' => "Success",
+                'users' => $users
             ]);
         }
         return response()->json([
@@ -31,28 +38,28 @@ class LoginController extends Controller
 
         ]);
     }
-    public function getdetail(Request $request)
+    public function tokenvalidate(Request $request)
     {
-        $input = $request->all();
-        $email = $input['email'];
-       
-       $users = DB::table('users')->select('id','role_id','name','email')->where('email' , $email )->get();
-         return response()->json([
-            'status' => true,
-            'message' => "Registationdfghjkl Success",
-            'mail' => $input['email'],
-            'users' => $users
+            $input = $request->all();
+            $api_token = $input['api_token'];
+           
+           $users = DB::table('users')->select('id','role_id','name','email','api_token')->where('api_token' , $api_token )->get();
+           
+           if($users->isEmpty())
+           {
+            return response()->json([
+            'status' => false,
+            'message' => "invalid token",
+         
         ]);
-    }
-    // public function index(Request $request)
-    // {
-    //     if(is_numeric($request->get('email'))){
-    //         $apm= ['mobile_no'=>$request->get('email'),'password'=>$request->get('password')];
-    //         dd($apm);
-    //     }
-    //     $users = DB::table('users')->select('name','email','password','user_id')->get();
-    //       dd($users);
-    //     // $data = compact('users')
-    //     // return view('your-view-name')->with('$data');
-    // }
+           }
+           else{
+            return response()->json([
+                'status' => true,
+                'message' => "Success",
+                'users' => $users
+            ]);
+        }
+        }
+   
 }

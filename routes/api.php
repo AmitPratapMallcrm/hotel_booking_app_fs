@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\HotelController;
 use App\Http\Controllers\RegisterController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -29,4 +30,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/register', [RegisterController::class, 'store']);
  
 Route::post('/login', [LoginController::class, 'check']);
-Route::post('/loginmail', [LoginController::class, 'getdetail']);
+Route::post('/tokenvalidate', [LoginController::class, 'tokenvalidate']);
+Route::post('/hotelRegister', [HotelController::class, 'store']);
+Route::get('/myhotel', [HotelController::class, 'showByuserId']);
+//Route::post('/loginmail', [LoginController::class, 'getdetail']);

@@ -22,15 +22,19 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
+//this is for vivek new changes  
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
 Route::post('/register', [RegisterController::class, 'store']);
- 
+
 Route::post('/login', [LoginController::class, 'check']);
+
 Route::post('/tokenvalidate', [LoginController::class, 'tokenvalidate']);
 Route::post('/hotelRegister', [HotelController::class, 'store']);
 Route::get('/myhotel', [HotelController::class, 'showByuserId']);
 //Route::post('/loginmail', [LoginController::class, 'getdetail']);
+
+Route::post('/loginmail', [LoginController::class, 'getdetail']);
+

@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use function PHPUnit\Framework\isEmpty;
 
+use function PHPUnit\Framework\isEmpty;
+
 class LoginController extends Controller
 {
     public function check(Request $request)
